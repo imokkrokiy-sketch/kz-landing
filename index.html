@@ -2,223 +2,409 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>VIP • Знакомства</title>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>VIP анкеты</title>
   <style>
     :root{
-      --bg1:#0b1220;
-      --bg2:#0a2a2a;
-      --card: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.10);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.65);
-      --gold1:#ffd36a;
-      --gold2:#b78b2c;
+      --bg1:#061a22;
+      --bg2:#0b2a33;
+      --card:#0e2d35cc;
+      --stroke:#ffffff14;
+      --text:#eaf2f5;
+      --muted:#a9c0c7;
+      --gold1:#f7e39b;
+      --gold2:#d7a53a;
+      --btn:#ffffff12;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, #173a55 0%, transparent 60%),
-                  radial-gradient(900px 700px at 90% 20%, #134a3c 0%, transparent 55%),
-                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      color:var(--text);
       min-height:100vh;
-      padding: 18px 14px 24px;
+      background:
+        radial-gradient(1200px 700px at 30% -10%, rgba(255,215,128,.18), transparent 60%),
+        radial-gradient(900px 600px at 100% 10%, rgba(80,200,255,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
+      padding: 18px 14px 26px;
     }
 
-    .wrap{
-      max-width: 420px;
-      margin: 0 auto;
+    .wrap{max-width: 520px; margin:0 auto;}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      margin: 4px 2px 14px;
     }
-
-    .title{
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: .2px;
-      margin: 6px 2px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+      font-size:18px;
     }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--stroke);
       border-radius: 999px;
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      backdrop-filter: blur(10px);
-      font-size: 12px;
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      font-size:13px;
       color: var(--muted);
     }
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:#2bf28f;
-      box-shadow: 0 0 18px rgba(43,242,143,.55);
+    .dot{width:10px; height:10px; border-radius:999px; background:#3cf27d; box-shadow:0 0 0 5px rgba(60,242,125,.12);}
+
+    /* Age Gate */
+    .gate{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-bottom: 14px;
+    }
+    .hero{
+      position:relative;
+      height: 260px;
+      background: #0b1d24;
+    }
+    .hero img{
+      width:100%; height:100%;
+      object-fit:cover;
+      filter:saturate(1.05) contrast(1.03);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 40%, rgba(6,26,34,.92) 100%);
+    }
+    .heroBadge{
+      position:absolute; left:16px; bottom:16px;
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.25);
+      z-index:2;
+      backdrop-filter: blur(10px);
+    }
+    .vipTag{
+      padding:6px 10px;
+      border-radius: 999px;
+      font-weight:800;
+      background: linear-gradient(135deg, var(--gold1), var(--gold2));
+      color:#141414;
+      font-size:12px;
     }
 
+    .gateBody{ padding: 16px 16px 18px; }
+    .titleRow{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .h1{ font-size:34px; font-weight:900; margin:0; line-height:1.05; }
+    .sub{ color:var(--muted); margin-top:8px; font-size:14px; line-height:1.35; }
+    .crown{
+      align-self:flex-start;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:800;
+      color: #ffdca7;
+      white-space:nowrap;
+    }
+    .ageBox{
+      margin-top:14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .ageHead{ display:flex; align-items:center; gap:10px; color:var(--muted); font-weight:700; }
+    .ageBtns{ display:grid; gap:10px; margin-top:12px; }
+    .btn{
+      width:100%;
+      border: 1px solid var(--stroke);
+      background: var(--btn);
+      color: var(--text);
+      padding:14px 14px;
+      border-radius: 16px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease;
+    }
+    .btn:active{ transform: scale(.99); }
+    .btnGold{
+      background: linear-gradient(135deg, rgba(247,227,155,.95), rgba(215,165,58,.95));
+      color:#151515;
+      border: 0;
+      box-shadow: 0 12px 30px rgba(215,165,58,.20);
+    }
+    .hint{ margin-top:10px; color: rgba(233,245,249,.55); font-size:12px; line-height:1.35; }
+
+    /* Profiles list */
     .list{
-      display:flex;
-      flex-direction:column;
+      display:none;
+      margin-top: 14px;
+      display:grid;
       gap:12px;
     }
-
     .card{
       display:flex;
       gap:12px;
       padding: 12px;
-      border-radius: 18px;
-      background: var(--card);
-      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 14px 40px rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
-      box-shadow: 0 18px 50px rgba(0,0,0,.28);
-      cursor:pointer;
-      text-align:left;
     }
-    .card:active{ transform: scale(.99); }
-
-    .ava{
-      width: 86px;
-      height: 86px;
-      border-radius: 16px;
+    .avatar{
+      width:86px; height:86px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.22);
       overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
       flex: 0 0 86px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
     }
-    .ava img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .meta{
-      flex: 1 1 auto;
-      min-width: 0;
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .meta{ flex:1; min-width:0; }
+    .nameRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-top: 2px;
     }
     .name{
-      font-weight: 900;
-      font-size: 16px;
-      line-height: 1.15;
-      margin-top: 2px;
+      font-weight:900; font-size:18px;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .badge{
+      padding:7px 10px;
+      border-radius: 999px;
+      font-weight:900;
+      font-size:12px;
+      color:#161616;
+      background: linear-gradient(135deg, var(--gold1), var(--gold2));
+      flex:0 0 auto;
+    }
+    .lines{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .ctaRow{
+      margin-top: 10px;
       display:flex;
-      align-items:center;
-      justify-content:space-between;
       gap:10px;
     }
-    .sub{
-      margin-top: 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .badge{
-      flex: 0 0 auto;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-      color: #1b1400;
-      background: linear-gradient(135deg, var(--gold1), var(--gold2));
-      box-shadow: 0 10px 28px rgba(255, 204, 90, 0.22);
-      white-space:nowrap;
-    }
-
-    .btn-more{
-      margin-top: 14px;
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 16px;
-      border: 0;
-      font-size: 15px;
-      font-weight: 900;
+    .cta{
+      flex:1;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      font-weight:900;
       cursor:pointer;
-      color:#1b1400;
-      background: linear-gradient(135deg, var(--gold1), var(--gold2));
-      box-shadow: 0 18px 40px rgba(255, 204, 90, 0.20);
-    }
-    .btn-more:active{ transform: scale(.99); }
-
-    .note{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-      line-height: 1.35;
       text-align:center;
+      user-select:none;
+    }
+    .ctaGold{
+      background: linear-gradient(135deg, rgba(247,227,155,.95), rgba(215,165,58,.95));
+      color:#151515;
+      border:0;
+    }
+
+    .moreWrap{
+      margin-top: 14px;
+      display:none;
+    }
+    .disclaimer{
+      margin-top: 10px;
+      text-align:center;
+      color: rgba(233,245,249,.55);
+      font-size: 12px;
+      line-height:1.35;
+      padding: 0 8px;
+    }
+    .legal{
+      margin-top: 8px;
+      text-align:center;
+      color: rgba(233,245,249,.40);
+      font-size: 11px;
+      line-height:1.35;
+      padding: 0 14px;
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
-
-    <div class="title">
-      <div>🔥 VIP анкеты</div>
+    <div class="topbar">
+      <div class="brand">🔥 VIP анкеты</div>
       <div class="pill"><span class="dot"></span> Онлайн сейчас</div>
     </div>
 
-    <!-- 5 девушек -->
-    <div class="list">
-      <div class="card" onclick="go()">
-        <div class="ava"><img src="girl1.jpg" alt="Анкета 1"></div>
-        <div class="meta">
-          <div class="name">Асылым <span class="badge">VIP</span></div>
-          <div class="sub">Расстояние: 1.6 км • Онлайн</div>
+    <!-- 1) Экран 18+ (оставляем только тут) -->
+    <div id="gate" class="gate">
+      <div class="hero">
+        <!-- Поставь СВОЁ/стоковое фото с правами -->
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=70" alt="VIP" />
+        <div class="heroBadge">
+          <span class="dot"></span>
+          <div style="font-weight:900;">Онлайн сейчас</div>
+          <span class="vipTag">VIP</span>
         </div>
       </div>
 
-      <div class="card" onclick="go()">
-        <div class="ava"><img src="girl2.jpg" alt="Анкета 2"></div>
-        <div class="meta">
-          <div class="name">Айша <span class="badge">PREMIUM</span></div>
-          <div class="sub">Расстояние: 2.3 км • Онлайн</div>
+      <div class="gateBody">
+        <div class="titleRow">
+          <div>
+            <h1 class="h1">VIP клуб</h1>
+            <div class="sub">Закрытые анкеты • Быстрый доступ • Только для 18+</div>
+          </div>
+          <div class="crown">👑 PREMIUM</div>
         </div>
-      </div>
 
-      <div class="card" onclick="go()">
-        <div class="ava"><img src="girl3.jpg" alt="Анкета 3"></div>
-        <div class="meta">
-          <div class="name">Мадина <span class="badge">VIP</span></div>
-          <div class="sub">Расстояние: 0.9 км • Онлайн</div>
-        </div>
-      </div>
-
-      <div class="card" onclick="go()">
-        <div class="ava"><img src="girl4.jpg" alt="Анкета 4"></div>
-        <div class="meta">
-          <div class="name">Дана <span class="badge">PREMIUM</span></div>
-          <div class="sub">Расстояние: 3.1 км • Онлайн</div>
-        </div>
-      </div>
-
-      <div class="card" onclick="go()">
-        <div class="ava"><img src="girl5.jpg" alt="Анкета 5"></div>
-        <div class="meta">
-          <div class="name">Жанель <span class="badge">VIP</span></div>
-          <div class="sub">Расстояние: 4.0 км • Онлайн</div>
+        <div class="ageBox">
+          <div class="ageHead">🔒 Укажите свой возраст</div>
+          <div class="ageBtns">
+            <button class="btn btnGold" id="btn18">✨ Мне есть 18+</button>
+            <button class="btn" id="btnNo">Мне нет 18</button>
+          </div>
+          <div class="hint">Нажимая кнопку, вы подтверждаете, что вам есть 18 лет и согласны с правилами сервиса.</div>
         </div>
       </div>
     </div>
 
-    <!-- Кнопка "больше девушек" -->
-    <button class="btn-more" onclick="go()">Больше девушек</button>
+    <!-- 2) Список анкет (прокрутка страницы) -->
+    <div id="list" class="list">
+      <!-- Карточка 1 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=70" alt="Анкета 1">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Асылым</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 1.6 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaGold" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
 
-    <div class="note">
-      Нажимая, вы подтверждаете, что вам 18+ и согласны с правилами сервиса.
+      <!-- Карточка 2 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?auto=format&fit=crop&w=600&q=70" alt="Анкета 2">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Айша</div>
+            <div class="badge">PREMIUM</div>
+          </div>
+          <div class="lines">Расстояние: 2.3 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaGold" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Встретиться</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 3 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=70" alt="Анкета 3">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Мадина</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 0.9 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaGold" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 4 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="https://images.unsplash.com/photo-1524503033411-f3ce76d97c33?auto=format&fit=crop&w=600&q=70" alt="Анкета 4">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Дана</div>
+            <div class="badge">PREMIUM</div>
+          </div>
+          <div class="lines">Расстояние: 3.1 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaGold" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Свидание</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 5 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=70" alt="Анкета 5">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Жанель</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 4.0 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaGold" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- 3) Кнопка “Больше девушек” -->
+    <div id="moreWrap" class="moreWrap">
+      <button class="btn btnGold" id="moreBtn">Больше девушек</button>
+      <div class="disclaimer">Нажимая кнопку, вы подтверждаете, что вам 18+.</div>
+      <div class="legal">Используйте только контент, на который у вас есть права/разрешение.</div>
+    </div>
   </div>
 
   <script>
-    // Меняешь ссылку ТОЛЬКО здесь — и всё.
-    const SMARTLINK = "https://t.me/@Ka3ax6lyaa";
-    function go(){ window.location.href = SMARTLINK; }
+    // 1) ВСТАВЬ сюда свой smartlink:
+    const SMARTLINK_URL = "https://example.com/your-smartlink";
+
+    // 2) Логика 18+ -> показываем список
+    const gate = document.getElementById("gate");
+    const list = document.getElementById("list");
+    const moreWrap = document.getElementById("moreWrap");
+
+    document.getElementById("btn18").addEventListener("click", () => {
+      gate.style.display = "none";
+      list.style.display = "grid";
+      moreWrap.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("btnNo").addEventListener("click", () => {
+      alert("Доступ только для 18+");
+    });
+
+    // 3) Все CTA ведут на smartlink
+    document.querySelectorAll("[data-go='smartlink']").forEach(el => {
+      el.addEventListener("click", () => {
+        window.location.href = SMARTLINK_URL;
+      });
+    });
+
+    document.getElementById("moreBtn").addEventListener("click", () => {
+      window.location.href = SMARTLINK_URL;
+    });
   </script>
 </body>
   </html>
