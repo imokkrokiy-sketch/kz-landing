@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>VIP анкеты</title>
+
+  <style>
+    :root{
+      --bg0:#050607;
+      --bg1:#0a0b0d;
+      --bg2:#121318;
+
+      --card: rgba(18, 19, 24, .72);
+      --stroke: rgba(255,255,255,.10);
+
+      --text:#f3f5f7;
+      --muted: rgba(243,245,247,.72);
+
+      --orange1:#ffb14a;
+      --orange2:#ff6a00;
+
+      --btn: rgba(255,255,255,.06);
+
+      --shadow: 0 22px 70px rgba(0,0,0,.62);
+      --radius: 22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,106,0,.20), transparent 60%),
+        radial-gradient(900px 600px at 110% 10%, rgba(255,177,74,.12), transparent 55%),
+        radial-gradient(600px 380px at 60% 120%, rgba(255,106,0,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg2), var(--bg0));
+      padding: 18px 14px 26px;
+      overflow-x:hidden;
+    }
+
+    /* subtle animated glow */
+    body::before{
+      content:"";
+      position:fixed; inset:-120px;
+      background:
+        radial-gradient(420px 280px at 18% 10%, rgba(255,106,0,.12), transparent 60%),
+        radial-gradient(520px 360px at 88% 18%, rgba(255,177,74,.10), transparent 62%);
+      filter: blur(14px);
+      opacity:.9;
+      pointer-events:none;
+      animation: floatGlow 10s ease-in-out infinite;
+      z-index:0;
+    }
+    @keyframes floatGlow{
+      0%,100%{transform: translate3d(0,0,0)}
+      50%{transform: translate3d(0,-10px,0)}
+    }
+
+    /* Snow layer */
+    #snow{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .wrap{max-width: 520px; margin:0 auto; position:relative; z-index:2;}
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      margin: 4px 2px 14px;
+      gap:10px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.2px;
+      font-size:18px;
+    }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 12px 32px rgba(0,0,0,.35);
+      font-size:13px;
+      color: var(--muted);
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+    }
+    /* tiny shimmer */
+    .pill::after{
+      content:"";
+      position:absolute; top:-40%; left:-30%;
+      width:60%; height:180%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform: rotate(20deg);
+      animation: pillShine 3.8s ease-in-out infinite;
+      opacity:.8;
+    }
+    @keyframes pillShine{
+      0%{transform: translateX(-140%) rotate(20deg)}
+      55%{transform: translateX(220%) rotate(20deg)}
+      100%{transform: translateX(220%) rotate(20deg)}
+    }
+
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(180deg, #2cff88, #00cf5a);
+      box-shadow:0 0 0 6px rgba(44,255,136,.12);
+      animation: pulse 1.8s ease-in-out infinite;
+      flex:0 0 auto;
+    }
+    @keyframes pulse{
+      0%,100%{transform: scale(1); box-shadow:0 0 0 6px rgba(44,255,136,.12)}
+      50%{transform: scale(1.08); box-shadow:0 0 0 10px rgba(44,255,136,.10)}
+    }
+
+    /* Age Gate */
+    .gate{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-bottom: 14px;
+      transform: translateZ(0);
+    }
+
+    .hero{
+      position:relative;
+      height: 260px;
+      background: #0b0c10;
+    }
+
+    .hero img{
+      width:100%; height:100%;
+      object-fit:cover;
+      filter:saturate(1.02) contrast(1.05);
+      transform: scale(1.02);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(520px 280px at 75% 20%, rgba(255,106,0,.18), transparent 60%),
+        linear-gradient(180deg, transparent 42%, rgba(5,6,7,.92) 100%);
+    }
+
+    .heroBadge{
+      position:absolute; left:16px; bottom:16px;
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.35);
+      z-index:2;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .vipTag{
+      padding:6px 10px;
+      border-radius: 999px;
+      font-weight:900;
+      background: linear-gradient(135deg, var(--orange1), var(--orange2));
+      color:#111;
+      font-size:12px;
+      box-shadow: 0 10px 26px rgba(255,106,0,.22);
+    }
+
+    .gateBody{ padding: 16px 16px 18px; }
+
+    .titleRow{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
+    }
+
+    .h1{ font-size:34px; font-weight:950; margin:0; line-height:1.05; }
+
+    .sub{ color:var(--muted); margin-top:8px; font-size:14px; line-height:1.35; }
+
+    .crown{
+      align-self:flex-start;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:900;
+      color: rgba(255,177,74,.95);
+      white-space:nowrap;
+    }
+
+    .ageBox{
+      margin-top:14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .ageHead{ display:flex; align-items:center; gap:10px; color:var(--muted); font-weight:800; }
+
+    .ageBtns{ display:grid; gap:10px; margin-top:12px; }
+
+    .btn{
+      width:100%;
+      border: 1px solid var(--stroke);
+      background: var(--btn);
+      color: var(--text);
+      padding:14px 14px;
+      border-radius: 16px;
+      font-weight:950;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .10s ease, filter .15s ease, box-shadow .15s ease;
+      position:relative;
+      isolation:isolate;
+    }
+    .btn:active{ transform: scale(.99); }
+
+    /* Neon orange primary button */
+    .btnOrange{
+      background: linear-gradient(135deg, rgba(255,177,74,.98), rgba(255,106,0,.98));
+      color:#111;
+      border: 0;
+      box-shadow:
+        0 16px 46px rgba(255,106,0,.26),
+        0 0 0 1px rgba(255,177,74,.22) inset;
+    }
+    .btnOrange::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius: 18px;
+      background: radial-gradient(120px 40px at 20% 20%, rgba(255,255,255,.35), transparent 70%),
+                  radial-gradient(160px 60px at 70% 20%, rgba(255,177,74,.55), transparent 70%),
+                  radial-gradient(200px 90px at 50% 100%, rgba(255,106,0,.55), transparent 70%);
+      filter: blur(10px);
+      opacity:.55;
+      z-index:-1;
+      animation: neonBreath 2.2s ease-in-out infinite;
+    }
+    @keyframes neonBreath{
+      0%,100%{opacity:.45; transform: scale(1)}
+      50%{opacity:.70; transform: scale(1.02)}
+    }
+
+    .hint{ margin-top:10px; color: rgba(243,245,247,.55); font-size:12px; line-height:1.35; }
+
+    /* Profiles list */
+    .list{
+      display:none;
+      margin-top: 14px;
+      display:grid;
+      gap:12px;
+    }
+
+    /* Reveal animation for cards */
+    .card{
+      display:flex;
+      gap:12px;
+      padding: 12px;
+      border-radius: var(--radius);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 16px 46px rgba(0,0,0,.40);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease, opacity .45s ease;
+      opacity:0;
+      transform: translateY(10px);
+    }
+    .card.reveal{
+      opacity:1;
+      transform: translateY(0);
+    }
+    .card:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+    }
+
+    .avatar{
+      width:86px; height:86px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.22);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      flex: 0 0 86px;
+    }
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .meta{ flex:1; min-width:0; }
+
+    .nameRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-top: 2px;
+    }
+    .name{
+      font-weight:950; font-size:18px;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+
+    .badge{
+      padding:7px 10px;
+      border-radius: 999px;
+      font-weight:950;
+      font-size:12px;
+      color:#111;
+      background: linear-gradient(135deg, var(--orange1), var(--orange2));
+      box-shadow: 0 12px 28px rgba(255,106,0,.18);
+      flex:0 0 auto;
+    }
+
+    .lines{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .ctaRow{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+    }
+
+    .cta{
+      flex:1;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      font-weight:950;
+      cursor:pointer;
+      text-align:center;
+      user-select:none;
+      transition: transform .10s ease, filter .15s ease, box-shadow .15s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .cta:active{ transform: scale(.99); }
+
+    .ctaOrange{
+      background: linear-gradient(135deg, rgba(255,177,74,.98), rgba(255,106,0,.98));
+      color:#111;
+      border:0;
+      box-shadow: 0 14px 34px rgba(255,106,0,.18);
+    }
+    .ctaOrange::after{
+      content:"";
+      position:absolute;
+      top:-40%; left:-30%;
+      width:60%; height:180%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      transform: rotate(20deg);
+      animation: ctaShine 4.2s ease-in-out infinite;
+      opacity:.75;
+    }
+    @keyframes ctaShine{
+      0%{transform: translateX(-160%) rotate(20deg)}
+      60%{transform: translateX(240%) rotate(20deg)}
+      100%{transform: translateX(240%) rotate(20deg)}
+    }
+
+    .moreWrap{
+      margin-top: 14px;
+      display:none;
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .moreWrap.reveal{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .disclaimer{
+      margin-top: 10px;
+      text-align:center;
+      color: rgba(243,245,247,.60);
+      font-size: 12px;
+      line-height:1.35;
+      padding: 0 8px;
+    }
+    .legal{
+      margin-top: 8px;
+      text-align:center;
+      color: rgba(243,245,247,.42);
+      font-size: 11px;
+      line-height:1.35;
+      padding: 0 14px;
+    }
+
+    /* Telegram button */
+    .tgBtn{
+      margin: 14px auto 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 18px;
+      text-decoration: none;
+      font-weight: 950;
+      color: #f3f5f7;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease, opacity .45s ease;
+      opacity:0;
+      transform: translateY(10px);
+    }
+    .tgBtn.reveal{
+      opacity:1;
+      transform: translateY(0);
+    }
+    .tgBtn:hover{
+      border-color: rgba(255,255,255,.16);
+      background: rgba(255,255,255,.07);
+    }
+    .tgBtn:active{ transform: scale(.995); }
+
+    .tgIcon{
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .tgIcon svg{ fill: var(--orange1); }
+    .tgText{ font-size: 16px; }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important;}
+      body::before{display:none;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Snow canvas -->
+  <canvas id="snow"></canvas>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">🖤🧡 VIP Анкета</div>
+
+      <div class="pill">
+        <span class="dot"></span>
+        Онлайн <span id="onlineCount">149</span> девушек
+      </div>
+    </div>
+
+    <!-- 1) Экран 18+ -->
+    <div id="gate" class="gate">
+      <div class="hero">
+        <img src="girl1.jpg.png" alt="VIP" />
+        <div class="heroBadge">
+          <span class="dot"></span>
+          <div style="font-weight:950;">Узнай кто находится рядом!</div>
+          <span class="vipTag">VIP</span>
+        </div>
+      </div>
+
+      <div class="gateBody">
+        <div class="titleRow">
+          <div>
+            <h1 class="h1">Знакомства | Танысу</h1>
+            <div class="sub">Девушки выбирают тебя • Любой город/страна • Только для 18+</div>
+          </div>
+          <div class="crown">👑 PREMIUM</div>
+        </div>
+
+        <div class="ageBox">
+          <div class="ageHead">🔒 Укажите свой возраст</div>
+          <div class="ageBtns">
+            <button class="btn btnOrange" id="btn18">✨ Мне есть 18+</button>
+            <button class="btn" id="btnNo">Мне нет 18</button>
+          </div>
+          <div class="hint">Нажимая кнопку, вы подтверждаете, что вам есть 18 лет и согласны с правилами сервиса.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2) Список анкет -->
+    <div id="list" class="list">
+      <!-- Карточка 1 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="girl1.jpg.png" alt="Анкета 1">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Асылым</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 1.6 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaOrange" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 2 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="girl2.jpg.png" alt="Анкета 2">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Айша</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 2.3 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaOrange" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Встретиться</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 3 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="girl3.jpg.jpg" alt="Анкета 3">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Мадина</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 0.9 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaOrange" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 4 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="girl4.jpg.png" alt="Анкета 4">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Дана</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 3.1 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaOrange" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Свидание</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка 5 -->
+      <div class="card">
+        <div class="avatar">
+          <img src="girl5.jpg.png" alt="Анкета 5">
+        </div>
+        <div class="meta">
+          <div class="nameRow">
+            <div class="name">Жанель</div>
+            <div class="badge">VIP</div>
+          </div>
+          <div class="lines">Расстояние: 4.0 км • Онлайн</div>
+          <div class="ctaRow">
+            <div class="cta ctaOrange" data-go="smartlink">Написать</div>
+            <div class="cta" data-go="smartlink">Познакомиться</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3) Кнопка “Больше девушек” -->
+    <div id="moreWrap" class="moreWrap">
+      <button class="btn btnOrange" id="moreBtn">Больше девушек</button>
+      <div class="disclaimer">Нажимая кнопку, вы подтверждаете, что вам 18+.</div>
+      <div class="legal">Используйте только контент, на который у вас есть права/разрешение.</div>
+    </div>
+
+    <!-- Telegram канал -->
+    <a class="tgBtn"
+       id="tgBtn"
+       href="https://t.me/+vJ5K0dRnfqMyMGM8"
+       target="_blank" rel="noopener noreferrer">
+      <span class="tgIcon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path d="M21.8 4.4c.3-1.2-.9-2.1-2-1.7L3.1 9.1c-1.3.5-1.3 2.3.1 2.7l4.3 1.3 1.7 5.2c.4 1.2 2 1.5 2.8.6l2.5-2.7 4.7 3.4c1 .7 2.4.1 2.7-1.1L21.8 4.4Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="tgText">Телеграм канал</span>
+    </a>
+
+  </div>
+
+  <script>
+    // 1) ВСТАВЬ сюда свой smartlink:
+    const SMARTLINK_URL = "https://example.com/your-smartlink";
+
+    // 2) Логика 18+ -> показываем список + анимации появления
+    const gate = document.getElementById("gate");
+    const list = document.getElementById("list");
+    const moreWrap = document.getElementById("moreWrap");
+    const tgBtn = document.getElementById("tgBtn");
+
+    function revealCards(){
+      const cards = document.querySelectorAll("#list .card");
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add("reveal"), 90 * i);
+      });
+
+      setTimeout(() => moreWrap.classList.add("reveal"), 90 * cards.length + 120);
+      setTimeout(() => tgBtn.classList.add("reveal"), 90 * cards.length + 240);
+    }
+
+    document.getElementById("btn18").addEventListener("click", () => {
+      gate.style.display = "none";
+      list.style.display = "grid";
+      moreWrap.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // старт анимации
+      requestAnimationFrame(() => {
+        revealCards();
+      });
+    });
+
+    document.getElementById("btnNo").addEventListener("click", () => {
+      alert("Доступ только для 18+");
+    });
+
+    // 3) Все CTA ведут на smartlink
+    document.querySelectorAll("[data-go='smartlink']").forEach(el => {
+      el.addEventListener("click", () => {
+        window.location.href = SMARTLINK_URL;
+      });
+    });
+
+    document.getElementById("moreBtn").addEventListener("click", () => {
+      window.location.href = SMARTLINK_URL;
+    });
+
+    // 4) Онлайн число (живое)
+    const onlineEl = document.getElementById("onlineCount");
+    if (onlineEl) {
+      let current = Math.floor(Math.random() * (260 - 120 + 1)) + 120; // 120..260
+      onlineEl.textContent = current;
+
+      setInterval(() => {
+        const change = Math.floor(Math.random() * 9) - 4; // -4..+4
+        current = Math.min(320, Math.max(80, current + change));
+        onlineEl.textContent = current;
+      }, 6500);
+    }
+
+    // 5) Небольшой снег (canvas, лёгкий)
+    (function snow(){
+      const canvas = document.getElementById("snow");
+      if(!canvas) return;
+      const ctx = canvas.getContext("2d");
+      let w, h, dpr;
+
+      function resize(){
+        dpr = Math.min(2, window.devicePixelRatio || 1);
+        w = canvas.width = Math.floor(window.innerWidth * dpr);
+        h = canvas.height = Math.floor(window.innerHeight * dpr);
+        canvas.style.width = window.innerWidth + "px";
+        canvas.style.height = window.innerHeight + "px";
+      }
+      resize();
+      window.addEventListener("resize", resize, {passive:true});
+
+      // немного снежинок
+      const COUNT = Math.min(120, Math.max(55, Math.floor(window.innerWidth / 9)));
+      const flakes = Array.from({length: COUNT}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: (Math.random() * 1.7 + 0.6) * dpr,
+        vx: (Math.random() * 0.35 - 0.18) * dpr,
+        vy: (Math.random() * 0.80 + 0.35) * dpr,
+        a: Math.random() * 0.55 + 0.12
+      }));
+
+      function tick(){
+        ctx.clearRect(0,0,w,h);
+        for(const f of flakes){
+          f.x += f.vx;
+          f.y += f.vy;
+
+          if (f.y > h + 10*dpr) {
+            f.y = -10*dpr;
+            f.x = Math.random() * w;
+          }
+          if (f.x < -10*dpr) f.x = w + 10*dpr;
+          if (f.x > w + 10*dpr) f.x = -10*dpr;
+
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255,255,255,${f.a})`;
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+  </script>
+</body>
+</html>
+```0
