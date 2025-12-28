@@ -450,6 +450,18 @@
     document.getElementById("moreBtn").addEventListener("click", () => {
       window.location.href = SMARTLINK_URL;
     });
+  const onlineEl = document.getElementById("onlineCount");
+
+if (onlineEl) {
+  let current = Math.floor(Math.random() * (220 - 120 + 1)) + 120;
+  onlineEl.textContent = current;
+
+  setInterval(() => {
+    const change = Math.floor(Math.random() * 7) - 3; // -3…+3
+    current = Math.max(80, current + change);
+    onlineEl.textContent = current;
+  }, 7000);
+    }
   </script>
 </body>
   </html>
