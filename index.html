@@ -1,369 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VIP • Private</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>VIP • Знакомства</title>
 
   <style>
     :root{
-      --bg0:#050507;
-      --bg1:#0a0b10;
-      --bg2:#0d1a22;
-
-      --gold1:#f7d77a;
-      --gold2:#d6a84c;
-      --gold3:#b8842b;
-
-      --text:#f6f7fb;
-      --muted: rgba(246,247,251,.70);
-
-      --glass: rgba(255,255,255,.08);
-      --glass2: rgba(255,255,255,.12);
-
-      --shadow: 0 22px 70px rgba(0,0,0,.55);
-      --radius: 24px;
+      --bg1:#0b1220;
+      --bg2:#0a2a2a;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --gold1:#ffd36a;
+      --gold2:#b78b2c;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(800px 500px at 15% 10%, rgba(247,215,122,.10), transparent 60%),
-        radial-gradient(900px 700px at 85% 20%, rgba(0,180,255,.12), transparent 55%),
-        radial-gradient(1000px 700px at 55% 95%, rgba(214,168,76,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1) 40%, var(--bg2));
-      overflow-x:hidden;
-    }
-
-    /* subtle sparkles */
-    .sparkles{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-      opacity:.35;
-      background-image:
-        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.9), transparent 55%),
-        radial-gradient(1.5px 1.5px at 70% 40%, rgba(247,215,122,.95), transparent 55%),
-        radial-gradient(1.6px 1.6px at 40% 75%, rgba(255,255,255,.8), transparent 55%),
-        radial-gradient(1.2px 1.2px at 85% 80%, rgba(214,168,76,.9), transparent 55%),
-        radial-gradient(1.4px 1.4px at 10% 85%, rgba(255,255,255,.75), transparent 55%);
-      filter: blur(.2px);
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #173a55 0%, transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, #134a3c 0%, transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      padding: 18px 14px 24px;
     }
 
     .wrap{
-      position:relative;
-      z-index:1;
-      min-height:100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .title{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      margin: 6px 2px 12px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      padding:22px 14px;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(10px);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#2bf28f;
+      box-shadow: 0 0 18px rgba(43,242,143,.55);
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
 
     .card{
-      width:min(430px, 100%);
-      border-radius:var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      box-shadow: var(--shadow);
-      border:1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      overflow:hidden;
-      position:relative;
-    }
-
-    /* gold rim */
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      border-radius: calc(var(--radius) + 2px);
-      padding:2px;
-      background: linear-gradient(120deg, rgba(247,215,122,.0), rgba(247,215,122,.75), rgba(214,168,76,.15), rgba(247,215,122,.0));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:.9;
-      pointer-events:none;
-    }
-
-    /* top glow */
-    .glow{
-      position:absolute;
-      top:-120px; left:-120px;
-      width:320px; height:320px;
-      background: radial-gradient(circle, rgba(247,215,122,.35), transparent 60%);
-      filter: blur(2px);
-      opacity:.8;
-      pointer-events:none;
-    }
-
-    .top{
-      padding:14px;
-      position:relative;
-    }
-
-    .hero{
-      width:100%;
-      aspect-ratio: 4 / 3;
+      display:flex;
+      gap:12px;
+      padding: 12px;
       border-radius: 18px;
-      overflow:hidden;
-      position:relative;
-      border:1px solid rgba(255,255,255,.14);
-      background:#0b0f14;
-      box-shadow: 0 14px 40px rgba(0,0,0,.45);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+      cursor:pointer;
+      text-align:left;
     }
-    .hero img{
+    .card:active{ transform: scale(.99); }
+
+    .ava{
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      overflow:hidden;
+      flex: 0 0 86px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+    }
+    .ava img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
-      transform: scale(1.02);
-      filter: contrast(1.03) saturate(1.05);
     }
 
-    /* premium overlay */
-    .hero::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.55)),
-        radial-gradient(600px 300px at 30% 20%, rgba(247,215,122,.12), transparent 60%);
-      pointer-events:none;
+    .meta{
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .name{
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1.15;
+      margin-top: 2px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .sub{
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
     }
 
     .badge{
-      position:absolute;
-      left:14px;
-      bottom:14px;
-      padding:10px 12px;
+      flex: 0 0 auto;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(0,0,0,.40);
-      border:1px solid rgba(255,255,255,.16);
-      backdrop-filter: blur(10px);
-      font-weight:800;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      z-index:2;
-    }
-    .badge .dot{
-      width:8px;height:8px;border-radius:999px;
-      background:#46ff9a;
-      box-shadow:0 0 18px rgba(70,255,154,.65);
-    }
-    .badge .vipchip{
-      padding:4px 9px;
-      border-radius:999px;
-      font-size:12px;
-      color:#1a1405;
-      background: linear-gradient(180deg, var(--gold1), var(--gold2));
-      box-shadow: 0 10px 25px rgba(214,168,76,.25);
-    }
-
-    .content{
-      padding: 2px 18px 16px;
-    }
-
-    .title{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:8px;
-    }
-    .name{
-      font-size:24px;
-      font-weight:950;
-      line-height:1.05;
-      letter-spacing:.2px;
-    }
-    .meta{
-      margin-top:8px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .rightTag{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      align-items:flex-end;
-    }
-    .crown{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(247,215,122,.22);
-      background: rgba(247,215,122,.10);
-      color:#ffe7a7;
-      font-weight:900;
-      font-size:12px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #1b1400;
+      background: linear-gradient(135deg, var(--gold1), var(--gold2));
+      box-shadow: 0 10px 28px rgba(255, 204, 90, 0.22);
       white-space:nowrap;
     }
-    .dist{
-      font-size:12px;
-      color: rgba(246,247,251,.55);
-    }
 
-    .panel{
-      margin-top:14px;
-      padding:14px;
-      border-radius:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
-      border:1px solid rgba(255,255,255,.13);
-    }
-
-    .question{
-      font-weight:900;
-      font-size:16px;
-      margin:0 0 12px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .question .lock{
-      width:28px;height:28px;border-radius:10px;
-      display:grid;place-items:center;
-      background: rgba(247,215,122,.12);
-      border:1px solid rgba(247,215,122,.22);
-      color:#ffe7a7;
-      font-weight:900;
-    }
-
-    .btn{
-      width:100%;
-      border:none;
-      border-radius:16px;
-      padding:14px 14px;
-      font-size:16px;
-      font-weight:950;
+    .btn-more{
+      margin-top: 14px;
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 0;
+      font-size: 15px;
+      font-weight: 900;
       cursor:pointer;
-      transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
+      color:#1b1400;
+      background: linear-gradient(135deg, var(--gold1), var(--gold2));
+      box-shadow: 0 18px 40px rgba(255, 204, 90, 0.20);
     }
-    .btn:active{ transform: translateY(1px) scale(.99); }
-
-    /* Gold primary */
-    .btn.gold{
-      color:#1b1406;
-      background: linear-gradient(180deg, var(--gold1), var(--gold2));
-      box-shadow: 0 16px 40px rgba(214,168,76,.24);
-    }
-    .btn.gold:hover{ filter: brightness(1.03); }
-
-    /* Dark premium secondary */
-    .btn.dark{
-      margin-top:12px;
-      color: #f6f7fb;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 16px 40px rgba(0,0,0,.28);
-    }
-    .btn.dark:hover{ filter: brightness(1.06); }
+    .btn-more:active{ transform: scale(.99); }
 
     .note{
-      margin-top:12px;
-      font-size:12px;
-      color: rgba(246,247,251,.60);
-      line-height:1.35;
-    }
-
-    .footer{
-      padding: 12px 18px 18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      color: rgba(246,247,251,.52);
-      font-size:12px;
-    }
-    .mini{
-      display:flex; gap:8px; align-items:center;
-      padding:8px 10px;
-      border-radius:999px;
-      background: rgba(0,0,0,.20);
-      border:1px solid rgba(255,255,255,.10);
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.35;
+      text-align:center;
     }
   </style>
 </head>
 
 <body>
-  <div class="sparkles" aria-hidden="true"></div>
-
   <div class="wrap">
-    <div class="card">
-      <div class="glow" aria-hidden="true"></div>
 
-      <div class="top">
-        <div class="hero">
-          <!-- картинка в корне репо -->
-          <img src="3d86fda4867995ff4ccf40eb050af6c8.jpg" alt="Фото" />
-          <div class="badge">
-            <span class="dot"></span>
-            <span>Онлайн сейчас</span>
-            <span class="vipchip">VIP</span>
-          </div>
+    <div class="title">
+      <div>🔥 VIP анкеты</div>
+      <div class="pill"><span class="dot"></span> Онлайн сейчас</div>
+    </div>
+
+    <!-- 5 девушек -->
+    <div class="list">
+      <div class="card" onclick="go()">
+        <div class="ava"><img src="girl1.jpg" alt="Анкета 1"></div>
+        <div class="meta">
+          <div class="name">Асылым <span class="badge">VIP</span></div>
+          <div class="sub">Расстояние: 1.6 км • Онлайн</div>
         </div>
       </div>
 
-      <div class="content">
-        <div class="title">
-          <div>
-            <div class="name">Асылым</div>
-            <div class="meta">Закрытый клуб знакомств • Доступ по возрасту</div>
-          </div>
-
-          <div class="rightTag">
-            <div class="crown">👑 PREMIUM</div>
-            <div class="dist">Расстояние: 1.6 км</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <p class="question">
-            <span class="lock">🔒</span>
-            Укажите свой возраст
-          </p>
-
-          <button class="btn gold" onclick="go()">
-            ✨ Вам от 18–29 лет
-          </button>
-
-          <button class="btn dark" onclick="go()">
-            🖤 Вам от 30–60 лет
-          </button>
-
-          <div class="note">
-            Нажимая кнопку, вы подтверждаете, что вам есть 18 лет и вы согласны с правилами сервиса.
-          </div>
+      <div class="card" onclick="go()">
+        <div class="ava"><img src="girl2.jpg" alt="Анкета 2"></div>
+        <div class="meta">
+          <div class="name">Айша <span class="badge">PREMIUM</span></div>
+          <div class="sub">Расстояние: 2.3 км • Онлайн</div>
         </div>
       </div>
 
-      <div class="footer">
-        <div class="mini">💎 VIP стиль</div>
-        <div class="mini">🔒 HTTPS включится после выдачи сертификата</div>
+      <div class="card" onclick="go()">
+        <div class="ava"><img src="girl3.jpg" alt="Анкета 3"></div>
+        <div class="meta">
+          <div class="name">Мадина <span class="badge">VIP</span></div>
+          <div class="sub">Расстояние: 0.9 км • Онлайн</div>
+        </div>
+      </div>
+
+      <div class="card" onclick="go()">
+        <div class="ava"><img src="girl4.jpg" alt="Анкета 4"></div>
+        <div class="meta">
+          <div class="name">Дана <span class="badge">PREMIUM</span></div>
+          <div class="sub">Расстояние: 3.1 км • Онлайн</div>
+        </div>
+      </div>
+
+      <div class="card" onclick="go()">
+        <div class="ava"><img src="girl5.jpg" alt="Анкета 5"></div>
+        <div class="meta">
+          <div class="name">Жанель <span class="badge">VIP</span></div>
+          <div class="sub">Расстояние: 4.0 км • Онлайн</div>
+        </div>
       </div>
     </div>
+
+    <!-- Кнопка "больше девушек" -->
+    <button class="btn-more" onclick="go()">Больше девушек</button>
+
+    <div class="note">
+      Нажимая, вы подтверждаете, что вам 18+ и согласны с правилами сервиса.
+    </div>
+
   </div>
 
   <script>
-    // ✅ Меняешь ссылку только тут
+    // Меняешь ссылку ТОЛЬКО здесь — и всё.
     const SMARTLINK = "https://t.me/@Ka3ax6lyaa";
-
-    function go(){
-      window.location.href = SMARTLINK;
-    }
+    function go(){ window.location.href = SMARTLINK; }
   </script>
 </body>
-        </html>
+  </html>
