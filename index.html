@@ -3,128 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kezdesu</title>
+  <title>Ваш возраст?</title>
+
+  <!-- Шрифт как на скрине -->
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
+
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:Arial,sans-serif;
     }
 
     body{
-      background:#f5f5f7;
+      background:#f4f4f6;
       min-height:100vh;
       overflow:hidden;
-      color:#111827;
+      font-family:'Montserrat',sans-serif;
+      color:#0d1733;
     }
 
     .container{
       max-width:430px;
       margin:0 auto;
-      padding:28px 22px 40px;
+      padding:34px 22px 40px;
     }
+
+    /* LOGO */
 
     .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      font-family:'Lobster',cursive;
       font-size:34px;
-      font-weight:700;
-      color:#a1134b;
-      font-style:italic;
-      margin-bottom:45px;
+      color:#9b1748;
+
+      margin-bottom:78px;
     }
 
-    .logo span{
-      margin-left:6px;
+    .logo img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
     }
+
+    /* TITLE */
 
     h1{
       text-align:center;
-      font-size:56px;
+
+      font-size:58px;
+      line-height:0.95;
       font-weight:800;
-      line-height:1;
-      margin-bottom:12px;
+
+      margin-bottom:18px;
+
+      color:#09142f;
     }
 
     .sub{
       text-align:center;
-      color:#8d93a1;
-      font-size:22px;
+
+      font-size:23px;
       font-weight:700;
-      margin-bottom:55px;
+
+      color:#9095a3;
+
+      margin-bottom:72px;
     }
+
+    /* BUTTONS */
 
     .btn{
       position:relative;
+
       width:100%;
-      height:88px;
+      height:104px;
+
       border:none;
-      border-radius:24px;
-      margin-bottom:34px;
+      border-radius:28px;
+
       overflow:hidden;
       cursor:pointer;
 
-      background:linear-gradient(
-        180deg,
-        #c71c5b 0%,
-        #9d1245 100%
-      );
+      margin-bottom:38px;
 
       color:white;
-      font-size:24px;
+
+      font-size:25px;
       font-weight:800;
 
+      background:linear-gradient(
+        180deg,
+        #bc1655 0%,
+        #a31349 55%,
+        #95113f 100%
+      );
+
       box-shadow:
-        0 18px 35px rgba(175, 17, 74, 0.35),
-        inset 0 1px 0 rgba(255,255,255,0.15);
-
-      transition:0.2s;
+        0 18px 38px rgba(167,16,71,0.23),
+        inset 0 2px 0 rgba(255,255,255,0.08);
     }
 
-    .btn:active{
-      transform:scale(0.98);
+    /* глянцевый верх */
+
+    .btn::after{
+      content:"";
+
+      position:absolute;
+      top:0;
+      left:0;
+
+      width:100%;
+      height:50%;
+
+      background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0)
+      );
     }
 
-    /* движущийся зеркальный блик */
+    /* движущийся блик */
+
     .btn::before{
       content:"";
+
       position:absolute;
+
       top:-40%;
-      left:-120%;
+      left:-140%;
+
       width:70px;
-      height:220%;
-      background:rgba(255,255,255,0.28);
+      height:230%;
+
+      background:rgba(255,255,255,0.24);
 
       transform:rotate(18deg);
 
       filter:blur(2px);
 
-      animation:shine 2.8s infinite;
+      animation:shine 3s infinite;
     }
 
     .btn.second{
       background:linear-gradient(
-        120deg,
-        #b2144f 0%,
-        #a31147 42%,
-        #d46a8e 50%,
-        #b2144f 100%
+        110deg,
+        #b0124e 0%,
+        #b0124e 47%,
+        #cf6f90 48%,
+        #cf6f90 92%,
+        #b0124e 100%
       );
     }
 
     .btn.second::before{
-      animation-delay:1s;
+      animation-delay:1.1s;
     }
 
     @keyframes shine{
+
       0%{
-        left:-120%;
+        left:-140%;
       }
 
       100%{
         left:160%;
       }
+
     }
+
+    .btn:active{
+      transform:scale(0.985);
+    }
+
   </style>
 </head>
 
@@ -133,10 +188,14 @@
   <div class="container">
 
     <div class="logo">
-      Kezdesu <span>💋</span>
+      Kezdesu
+      <img src="https://cdn-icons-png.flaticon.com/512/742/742751.png">
     </div>
 
-    <h1>Ваш возраст?</h1>
+    <h1>
+      Ваш<br>
+      возраст?
+    </h1>
 
     <div class="sub">
       Сіздің жасыңыз?
@@ -153,10 +212,14 @@
   </div>
 
   <script>
-    function goOffer() {
+
+    function goOffer(){
+
       window.location.href =
       "https://trk.g4trk.com/click/1804?pid=123852&offer_id=25";
+
     }
+
   </script>
 
 </body>
